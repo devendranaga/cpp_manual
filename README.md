@@ -48,3 +48,30 @@ int main()
 ```
 
 **constexpr**
+
+Few rules:
+
+1. `constexpr` variables must only get values from functions that named with `constexpr`. Otherwise compiler errors.
+
+For example, if `square` is not declared as `constexpr` type, then compiler would throw an error.
+
+```cpp
+#include <iostream>
+
+static constexpr double square(double v)
+{
+    return v * v;
+}
+
+int main()
+{
+    const int v = 10;
+    int val = 10;
+
+    constexpr double v2 = square(v);
+    constexpr double val2 = square(val);
+}
+
+```
+
+Notice that value to the `square` is not set as `const`. However, the result must always be a constant when declaring / using `constexpr`. And so the compiler will now complain again on the last element that the result will vary because passed argument `val` is not a `const`.
