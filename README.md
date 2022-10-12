@@ -76,3 +76,9 @@ int main()
 
 Notice that value to the `square` is not set as `const`. However, the result must always be a constant when declaring / using `constexpr`. And so the compiler will now complain again on the last element that the result will vary because passed argument `val` is not a `const`.
 
+
+**Vectors**
+
+Elements of a vector can be referenced with the `&` while iterating through them. For an example,
+
+```cpp
