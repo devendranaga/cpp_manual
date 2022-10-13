@@ -82,3 +82,53 @@ Notice that value to the `square` is not set as `const`. However, the result mus
 Elements of a vector can be referenced with the `&` while iterating through them. For an example,
 
 ```cpp
+#include <iostream>
+#include <vector>
+
+int main()
+{
+    std::vector<int> v = {1,2,3,4};
+
+    for (auto &x: v) {
+        x ++;
+    }
+
+    for (auto x : v) {
+        printf("%d\n", x);
+    }
+}
+
+```
+
+Adding an element in vector can be either used with `push_back` or `emplace_back`.
+
+```cpp
+#include <iostream>
+#include <vector>
+
+int main(int argc, char **argv)
+{
+    std::vector<std::string> strs;
+
+    for (auto i = 1; i < argc; i ++) {
+        strs.emplace_back(argv[i]);
+    }
+
+    for (auto p : strs) {
+        printf("%s\n", p.c_str());
+    }
+}
+
+```
+
+**References and Pointers**
+
+1. Pointers Mostly harmless in C++ because every one uses managed memory allocators, unless they write low level code dealing with buffers or packets. Using reference or pointer doesn't really matter much.
+2. However, passing references for variables of `shared_ptr` or `vector` etc would save a lot of time deducing how to deref them properly.
+
+An example is that,
+
+```cpp
+void process_req(std::shared_ptr<request> &r);
+```
+
