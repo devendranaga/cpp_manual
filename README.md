@@ -132,3 +132,41 @@ An example is that,
 void process_req(std::shared_ptr<request> &r);
 ```
 
+**Inheritance**
+
+Concept of Inheritance is mostly to write reusable code. Below is one example of inheritance.
+
+```cpp
+
+class transport {
+    public:
+        explicit transport() { }
+        ~transport() { }
+        
+        int write_to_transport_conn(int sock, char *data, int data_len) {
+            return send(sock, data, data_len, 0);
+        }
+        
+        int read_from_transport_conn(int sock, char *data, int data_len) {
+            return recv(sock, data, data_len, 0);
+        }
+};
+
+class file_transport : public transport {
+    public:
+        explicit file_transport() { }
+        ~file_transport() { }
+        
+        int write(int sock, char *data, int data_len) {
+            return write_to_transport_conn(sock, data, data_len);
+        }
+        
+        int read(int sock, char *data, int data_len) {
+            return read_from_transport_conn(sock, data, datalen);
+        }
+};
+
+
+```
+
+So the base class `transport` being inherited by derived class `file_transport` so that `file_transport` could reuse the functions within the base class `transport`.
