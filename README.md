@@ -170,3 +170,122 @@ class file_transport : public transport {
 ```
 
 So the base class `transport` being inherited by derived class `file_transport` so that `file_transport` could reuse the functions within the base class `transport`.
+
+
+**Structure bindings**
+
+Structure bindings are useful when returning structures directly as constants or when hiding structures.
+
+for example,
+
+```cpp
+#include <iostream>
+
+struct s {
+	int a;
+	std::string val;
+};
+
+s get_struct()
+{
+        // return as tuple packed in the structure
+		return s{10, "val"};
+}
+
+int main()
+{
+	s a;
+
+	a = get_struct();
+	printf("%d %s\n", a.a, a.val.c_str());
+
+    // unpack the received structure into the variables
+	auto [_a, _val] = get_struct();
+	printf("%d %s\n", _a, _val.c_str());
+}
+
+```
+
+For example, when capturing the structure members with incorrect number of arguments result in compilation error.
+
+```cpp
+#include <iostream>
+
+struct a {
+	int a;
+	char p;
+	double v;
+};
+
+a get_struct()
+{
+	return a{1, 'p', 1.0};
+}
+
+int main()
+{
+	auto[_a, _b] = get_struct();
+	printf("%d %c %f\n", _a, _b);
+}
+
+```
+
+`std::map` can be iterated through as a tuple:
+
+```cpp
+#include <iostream>
+#include <string>
+#include <map>
+
+int main()
+{
+	std::map<int, std::string> var_str_map = {
+		{1, "apple"},
+		{2, "lemon"},
+		{3, "orange"},
+		{4, "banana"},
+	};
+
+	for (const auto &[key,val] : var_str_map) {
+		printf("key: %d val: %s\n", key, val.c_str());
+	}
+}
+
+```
+
+**function templates**
+
+Function templates are really useful when writing generic code.
+
+For example,
+
+```cpp
+#include <iostream>
+
+template <typename T>
+T max(T a, T b)
+{
+    return (a > b)? a: b;
+}
+
+template <typename T>
+T min(T a, T b)
+{
+    return (a < b)? a: b;
+}
+
+int main()
+{
+    int a = 4;
+    int b = 3;
+    int max_val = 0;
+    int min_val = 0;
+
+    max_val = max(a, b);
+    min_val = min(a, b);
+
+    printf("max %d min %d\n", max_val, min_val);
+}
+
+```
+
