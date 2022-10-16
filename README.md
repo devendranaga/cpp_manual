@@ -4,6 +4,8 @@ Few of the notes from personal projects, books, online material and trial and er
 
 **const**
 
+Be aware that `const` qualifier used to represent a constant value that never changes during the course of a program after the initialization.
+
 Below is one example of how weird `const` can get. Not sure of the usecase of the below snippet but very much works.
 
 ```cpp
@@ -289,3 +291,29 @@ int main()
 
 ```
 
+Below code taken from : http://users.cis.fiu.edu/~weiss/Deltoid/vcstl/templates
+
+
+```cpp
+template <class T>
+class Z
+{
+  public:
+Z() {} ;
+~Z() {} ;
+void f(){} ;
+void g(){} ;
+} ;
+
+int main()
+{
+Z<int> zi ;   //implicit instantiation generates class Z<int>
+Z<float> zf ; //implicit instantiation generates class Z<float>
+return 0 ;
+}
+
+````
+
+See that the `zi` and `zf` are implictly instantiated.
+
+once a call is made to `Z::f()` or `Z::g()` the code generation happens.
