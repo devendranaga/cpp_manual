@@ -2,6 +2,33 @@
 
 Few of the notes from personal projects, books, online material and trial and errors.
 
+## Classes
+
+Delete copy and move constructors, copy and move assignment operators when creating any static functions / variables within the class. Keeping them and having the default copy and assignment operators can produce undefined behavior.
+
+For example, when a singleton class to be defined and used, it is done as follows.
+
+```cpp
+
+class singleton {
+    public:
+        ~singleton() = default;
+	singleton(singleton &) = delete;
+	singleton &operator=(const singleton &) = delete;
+	singleton(singleton &&) = delete;
+	singleton &&operator=(const singleton &&) = delete;
+	
+	static singleton *instance() {
+	    static singleton s;
+	    return &s;
+	}
+	
+    private:
+        explicit singleton() = default;
+};
+
+```
+
 **const**
 
 Be aware that `const` qualifier used to represent a constant value that never changes during the course of a program after the initialization.
