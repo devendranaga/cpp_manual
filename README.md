@@ -198,7 +198,179 @@ class file_transport : public transport {
 
 ```
 
-So the base class `transport` being inherited by derived class `file_transport` so that `file_transport` could reuse the functions within the base class `transport`.
+during the inheritance, destructors must be set as `virtual` so that the destructors of the derived class can be called upon.
+
+For example, take a look at the below program.
+
+```cpp
+#include <iostream>
+#include <vector>
+
+class base {
+    public:
+        explicit base() = default;
+        ~base() = default;
+
+        virtual void print() { printf("hello\n"); }
+};
+
+class derived : public base {
+    public:
+        explicit derived() {
+            ptr = new int;
+
+            *ptr = 4;
+        }
+        ~derived() {
+            delete ptr;
+        }
+        virtual void print() override
+        {
+            printf("%d\n", *ptr);
+        }
+    private:
+        int *ptr;
+};
+
+int main()
+{
+    base *b = new derived;
+
+    b->print();
+
+    delete b;
+}
+
+```
+
+Although `delete` called to destroy the base and derived classes, the destructor of `derived` never gets called, thus resulting in a 
+leak of memory.
+
+Thus, destructors must be declared with virtual to hint the compiler to call all of the destructors. After changing the destructors to virtual, the above code looks as follows.
+
+```cpp
+#include <iostream>
+#include <vector>
+
+class base {
+    public:
+        explicit base() = default;
+        virtual ~base() = default;
+
+        virtual void print() { printf("hello\n"); }
+};
+
+class derived : public base {
+    public:
+        explicit derived() {
+            ptr = new int;
+
+            *ptr = 4;
+        }
+        virtual ~derived() {
+            delete ptr;
+        }
+        virtual void print() override
+        {
+            printf("%d\n", *ptr);
+        }
+    private:
+        int *ptr;
+};
+
+int main()
+{
+    base *b = new derived;
+
+    b->print();
+
+    delete b;
+}
+
+```
+
+
+
+So the base class `transport` being inherited by derived class `file_transport` so that `file_transport` could reuse the functions within the base class `transport`. The destructor sequence is always from derived class to the base.
+
+Consider a multi-inheritance case below, `base` class is derived by `derived_1` and `derived_1` is derived by `derived_2`.
+
+```cpp
+#include <iostream>
+
+class base {
+    public:
+        explicit base() = default;
+        virtual ~base() {
+            printf("base\n");
+        }
+};
+
+class derived_1 : public base {
+    public:
+        explicit derived_1() = default;
+        virtual ~derived_1() {
+            printf("derived_1\n");
+        }
+};
+
+class derived_2 : public derived_1 {
+    public:
+        explicit derived_2() = default;
+        virtual ~derived_2() {
+            printf("derived_2\n");
+        }
+};
+
+int main()
+{
+    base *d = new derived_2;
+
+    delete d;
+}
+
+```
+
+The calling sequence of destructor is in reverse order from `derived_2 -> derived_1 -> base`.
+
+**Function overriding**
+
+Function overriding of the base class is possible in the derived class. The below code uses `override` keyword to override the
+`print` member function of base class. or the inherited function can be declared `virtual`.
+
+```cpp
+#include <iostream>
+
+class base {
+    public:
+        explicit base() = default;
+        virtual ~base() = default;
+
+        virtual void print() {
+            printf("base\n");
+        }
+};
+
+class derived : public base {
+    public:
+        explicit derived() = default;
+        virtual ~derived() = default;
+
+        virtual void print() override {
+            printf("derived\n");
+        }
+};
+
+int main()
+{
+    derived d;
+
+    d.print();
+}
+
+```
+
+To call the `print` of the base class, `base::print()` can be used.
 
 
 **Structure bindings**
