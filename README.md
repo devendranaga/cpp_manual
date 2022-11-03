@@ -539,6 +539,12 @@ class builder {
 	void exec();
 };
 
+builder & builder::setup_a()
+{
+    // .. series of operations ..
+    return *this;
+}
+
 builder b;
 
 b.setup_a().setup_a2().setup_a3().setup_a4();
