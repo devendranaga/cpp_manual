@@ -516,3 +516,33 @@ return 0 ;
 See that the `zi` and `zf` are implictly instantiated.
 
 once a call is made to `Z::f()` or `Z::g()` the code generation happens.
+
+
+## Design Patterns
+
+### 1. Singleton design pattern
+
+### 2. Builder pattern
+
+Builder pattern is useful when initializing a series of steps together before program enters in execution.
+Method behind is the return a reference / pointer of the class itself.
+The caller utilizes this to repeatedly call the initializers.
+
+```cpp
+
+class builder {
+	builder &setup_a();
+	builder &setup_a2();
+	builder &setup_a3();
+	builder &setup_a4();
+	
+	void exec();
+};
+
+builder b;
+
+b.setup_a().setup_a2().setup_a3().setup_a4();
+
+b.exec();
+
+```
