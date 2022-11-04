@@ -522,6 +522,36 @@ once a call is made to `Z::f()` or `Z::g()` the code generation happens.
 
 ### 1. Singleton design pattern
 
+Singleton pattern is useful when a class needs to be accessed across various other classes / places. We just need not create an object to it, but get an
+instance and use it everywhere in need. In order to do this, we make a static function within the class and hide the constructor so no more duplicate objects are created.
+
+```cpp
+
+class singleton {
+	public:
+		static singleton *instance() {
+			static singleton s;
+			return &s;
+		}
+		~singleton() { }
+		singleton(const singleton &) = delete;
+		const singleton &operator=(const singleton &) = delete;
+		singleton(const singleton &&) = delete;
+		const singleton &&operator=(const singleton &&) = delete;
+		
+		void function_1();
+	private:
+		explicit singleton() { }
+};
+
+```
+
+Here the instance is created once and the object is obtained via the call `singleton *s = singleton::instance();`.
+
+Any other member functions can be references with using the object `s`.
+
+Singletons are generally used in cases such as configuration data, store / write to databases, loggers.
+
 ### 2. Builder pattern
 
 Builder pattern is useful when initializing a series of steps together before program enters in execution.
