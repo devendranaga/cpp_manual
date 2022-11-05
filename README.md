@@ -164,10 +164,38 @@ In the below call,
 
 ```cpp
 int string_copy(const char *src, char val[]);
-int string_copy(const char *str, char *val);
+int string_copy(const char *src, char *val);
 ```
 
 Both calls are one and the same, since C++ treats `val[]` and `*val` as same.
+
+The below code will copy `val` by reference and sets the value of `src` into `val`.
+
+```cpp
+
+#include <iostream>
+
+void string_set(const char *str, char val[])
+{
+    int i = 0;
+
+    for (i = 0; str[i] != '\0'; i ++) {
+        val[i] = str[i];
+    }
+
+    val[i] = '\0';
+}
+
+int main()
+{
+    const char *src = "test";
+    char val[10];
+
+    string_set(src, val);
+    printf("%s\n", val);
+}
+
+```
 
 **Inheritance**
 
