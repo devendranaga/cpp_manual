@@ -105,7 +105,6 @@ int main()
 
 Notice that value to the `square` is not set as `const`. However, the result must always be a constant when declaring / using `constexpr`. And so the compiler will now complain again on the last element that the result will vary because passed argument `val` is not a `const`.
 
-
 **Vectors**
 
 Elements of a vector can be referenced with the `&` while iterating through them. For an example,
@@ -160,6 +159,15 @@ An example is that,
 ```cpp
 void process_req(std::shared_ptr<request> &r);
 ```
+
+In the below call,
+
+```cpp
+int string_copy(const char *src, char val[]);
+int string_copy(const char *str, char *val);
+```
+
+Both calls are one and the same, since C++ treats `val[]` and `*val` as same.
 
 **Inheritance**
 
