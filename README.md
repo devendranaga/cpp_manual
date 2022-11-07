@@ -553,6 +553,26 @@ See that the `zi` and `zf` are implictly instantiated.
 
 once a call is made to `Z::f()` or `Z::g()` the code generation happens.
 
+### Templates with non-type parameters:
+
+```cpp
+template <typename T, size_t N>
+class array {
+	private:
+		T array_[N];
+};
+
+```
+
+The above template is one example of template with non-type parameters. This is one of the examples of `Array` abstractions.
+
+```cpp
+array<int, 6> a;
+```
+
+defines an array of 6 integers.
+
+
 
 ## Design Patterns
 
@@ -618,3 +638,10 @@ b.setup_a().setup_a2().setup_a3().setup_a4();
 b.exec();
 
 ```
+
+
+# Samples
+
+### Implementing an Array
+
+https://github.com/devendranaga/rust_manual/blob/6046ab88c5033f712d5455e0691a8fc6c019405d/code/bitops/src/lib.rs
