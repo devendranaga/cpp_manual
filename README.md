@@ -644,4 +644,17 @@ b.exec();
 
 ### Implementing an Array
 
-https://github.com/devendranaga/rust_manual/blob/6046ab88c5033f712d5455e0691a8fc6c019405d/code/bitops/src/lib.rs
+
+```cpp
+
+template <typename T, size_t N>
+class array {
+	public:
+		T &operator[](size_t idx) { return array_[idx]; }
+		T at(size_t idx) { return array_[idx]; }
+		size_t size() { return N; }
+	private:
+		T array_[N];
+};
+
+```
