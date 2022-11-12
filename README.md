@@ -29,6 +29,77 @@ class singleton {
 
 ```
 
+### Operator Overloading
+
+C++ Polymorphism provides operator overloading, which allows us to write programs by using same operators but logically between class objects etc.
+
+Below program demonstrates operator overloading.
+
+```cpp
+#include <iostream>
+
+class operator_example {
+    public:
+        explicit operator_example(int val) : val_(val) { }
+        ~operator_example() = default;
+
+        operator_example operator+(const operator_example &rhs) {
+            operator_example o(0);
+            o.val_ = this->val_ + rhs.val_;
+            return o;
+        }
+        operator_example operator-(const operator_example &rhs) {
+            operator_example o(0);
+            o.val_ = this->val_ - rhs.val_;
+            return o;
+        }
+        operator_example operator/(const operator_example &rhs) {
+            operator_example o(0);
+            o.val_ = this->val_ / rhs.val_;
+            return o;
+        }
+        operator_example operator*(const operator_example &rhs) {
+            operator_example o(0);
+            o.val_ = this->val_ * rhs.val_;
+            return o;
+        }
+
+        /* Prefix increment operator */
+        void operator++() { this->val_ ++; }
+
+        /* Prefix decrement operator */
+        void operator--() { this->val_ --; }
+
+        /* Postfix increment operator */
+        void operator++(int) { this->val_ ++; }
+
+        /* Postfix decrement operator */
+        void operator--(int) { this->val_ --; }
+        int operator()() { return this->val_; }
+
+    private:
+        int val_;
+};
+
+int main()
+{
+    operator_example o1(2), o2(1);
+    operator_example o3 = o1 + o2;
+    operator_example o4 = o1 - o2;
+    operator_example o5 = o1 / o2;
+    operator_example o6 = o1 * o2;
+
+    ++o6;
+    --o5;
+
+    o6++;
+    o5--;
+
+    printf("o1 %d o2 %d o3 %d o4 %d o5 %d o6 %d\n",
+            o1(), o2(), o3(), o4(), o5(), o6());
+}
+```
+
 **const**
 
 Be aware that `const` qualifier used to represent a constant value that never changes during the course of a program after the initialization.
