@@ -659,6 +659,31 @@ int main()
 
 ```
 
+Structure binding with multiple elements with iterator.
+
+```cpp
+#include <iostream>
+#include <vector>
+
+struct book {
+    int book_id;
+    std::string author;
+    double price;
+};
+
+int main()
+{
+    std::vector<book> books = {
+        {1, "Stephen King", 100},
+        {2, "Stephen King", 120},
+    };
+
+    for (auto &[id, author, price] : books) {
+        printf("%d %s %f\n", id, author.c_str(), price);
+    }
+}
+```
+
 **function templates**
 
 Function templates are really useful when writing generic code.
@@ -741,6 +766,72 @@ array<int, 6> a;
 
 defines an array of 6 integers.
 
+**Variable Argument Templates**
+
+Variable argument templates can be written with `typename... T`. The function arguments define the following way,
+
+```cpp
+template <typename... T>
+void get_args(T... args)
+```
+
+To get number of arguments use `sizeof...(args)`.
+
+```cpp
+#include <iostream>
+
+template <typename... T>
+void get_args(T... args)
+{
+    printf("length %d\n", sizeof...(args));
+}
+
+int main()
+{
+    get_args(1);
+    get_args(1, "test");
+}
+```
+
+With the knowledge of the templates, we can write variable argument `print` function.
+
+```cpp
+#include <iostream>
+
+enum class log_type {
+    LOG_INFO,
+    LOG_WARN,
+    LOG_ERROR,
+};
+
+template <typename... T>
+void log_msg(log_type t, T... args)
+{
+    switch (t) {
+        case log_type::LOG_INFO:
+            fprintf(stderr, "Info: ");
+            fprintf(stderr, args...);
+        break;
+        case log_type::LOG_WARN:
+            fprintf(stderr, "Warn: ");
+            fprintf(stderr, args...);
+        break;
+        case log_type::LOG_ERROR:
+            fprintf(stderr, "Error: ");
+            fprintf(stderr, args...);
+        break;
+        default:
+            return;
+    }
+}
+
+int main()
+{
+    log_msg(log_type::LOG_INFO, "hello info\n");
+    log_msg(log_type::LOG_WARN, "hello warn\n");
+    log_msg(log_type::LOG_ERROR, "hello error\n");
+}
+```
 
 
 ## Design Patterns
