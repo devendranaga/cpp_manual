@@ -2,6 +2,42 @@
 
 Few of the notes from personal projects, books, online material and trial and errors.
 
+**auto**
+
+`auto` provides type deduction if compiler can guess the type. For example when using range based for loops.
+
+```cpp
+for (auto it : vec) {
+    // use it
+}
+```
+
+the type `auto` here derives the constant iterator for it.
+
+
+**decltype**
+
+`decltype` specifier is used when deriving complex types. An example of it is as follows.
+
+```cpp
+template <typename P, typename Q>
+auto add(P p, Q q) -> decltype(p + q) {
+	return p + q;
+}
+```
+
+The above function derives return type of add from `p` and `q`.
+
+For example calling
+
+```cpp
+auto val = add(1.1, 2);
+
+printf("result %f\n", val);
+```
+
+is perfectly valid and compiler produces valid code. The resulting output will be in `double`.
+
 ## Classes
 
 Class is a container of data and implementation. Data is in the form of variables pertianing to that class and implementation is a set of
