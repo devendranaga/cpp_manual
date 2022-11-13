@@ -14,7 +14,6 @@ for (auto it : vec) {
 
 the type `auto` here derives the constant iterator for it.
 
-
 **decltype**
 
 `decltype` specifier is used when deriving complex types. An example of it is as follows.
@@ -82,6 +81,60 @@ class singleton {
 };
 
 ```
+
+A class constructor can call another constructor with in the same class.
+
+```cpp
+#include <iostream>
+
+class example {
+    public:
+        example() {
+            printf("Example class is called\n");
+        }
+        example(int f) : example() {
+            f_ = f;
+            printf("Example class with value %d is called\n");
+        }
+
+    private:
+        int f_;
+};
+
+int main()
+{
+    example e(1);
+}
+```
+
+**Enum class**
+
+Enum class is defined as
+
+```cpp
+enum class fruits {
+	APPLE,
+	ORANGE,
+};
+```
+
+To define a enumerated types,
+
+```cpp
+fruits f = fruits::APPLE;
+```
+
+If an enumerated type in C++ assigned to a string, it results in compiler error of assigning integer to a string type.
+
+```cpp
+enum class log_type {
+	LOG_INFO = "Info",
+};
+```
+
+Enum comparison can be directly performed with the `==` operator.
+
+But surprisingly an integer to enum type comparison cannot be done as its not the same types literally.
 
 ### Operator Overloading
 
@@ -576,6 +629,77 @@ int main()
 ```
 
 To call the `print` of the base class, `base::print()` can be used.
+
+When overriding the member functions within derived class, the base class member functions shall always be present. If the member functions
+of derived class has defined as `override` and base do not have the same function, it results in compiler error.
+
+The below code will not compile.
+
+```cpp
+#include <iostream>
+
+struct base {
+    public:
+        virtual void set(int val) { v = val; }
+    private:
+        int v;
+};
+
+class derived : public base {
+    public:
+        virtual void set(int val) override { v = val; }
+        virtual void set(double val) override { }
+
+    private:
+        int v;
+};
+
+int main()
+{
+    derived d;
+}
+```
+
+So remove override if a virtual member function of a derived class is not present in the base class.
+
+The below example also provide a calling convention of derived to base class.
+
+```cpp
+#include <iostream>
+
+struct base {
+    public:
+        virtual void set(int val) { v = val; }
+        virtual int get_int() { return v; }
+    private:
+        int v;
+};
+
+class derived : public base {
+    public:
+        virtual void set(int val) override { v = val; }
+        virtual void set(double val) { v_d = val; }
+        virtual int get_int() override { return v; }
+        double get_double() { return v_d; }
+
+    private:
+        int v;
+        double v_d;
+};
+
+int main()
+{
+    derived d;
+
+    d.base::set(1);
+    d.set(1);
+    d.set(1.1);
+
+    printf("%d %d %f\n", d.base::get_int(), d.get_int(), d.get_double());
+}
+```
+
+Calling a base class from the derived class is basically `derived_obj.base_class::method`.
 
 
 **Structure bindings**
