@@ -100,6 +100,7 @@ int main()
 }
 ```
 
+
 **const**
 
 Be aware that `const` qualifier used to represent a constant value that never changes during the course of a program after the initialization.
@@ -146,6 +147,22 @@ int main()
 }
 
 ```
+
+**nullptr**
+
+The `nullptr` constant is introduced to avoid confusion between using `NULL` and `0` when doing operator overloading.
+
+In `stdio.h` the constant `NULL` translates to a macro `#define NULL ((void *)0)`. Thus when doing the following,
+
+```c
+void set(char *ptr);
+void set(int val);
+```
+
+The compiler may not be able to distinguish between the two `set` functions.
+
+So whenever a pointer needs to be set to `NULL` use `nullptr`.
+
 
 **constexpr**
 
@@ -219,6 +236,33 @@ int main(int argc, char **argv)
 }
 
 ```
+
+Initializer lists are one of another features that when sometimes vector is requried but not necessarily need to be created. For example during program
+or parameter initialization.
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <initializer_list>
+
+void sort(std::vector<int> l)
+{
+    for (auto i : l) {
+        printf("%d\n", i);
+    }
+}
+
+int main()
+{
+    std::initializer_list<int> l {1, 2, 3};
+
+    sort(l);
+}
+```
+
+The above `std::initializer_list` is auto converted into `std::vector` soon after being passed.
+
+One issue is that if sort was taking a reference of the vector, then passing `initializer_list` to it will result in compiler error.
 
 **References and Pointers**
 
