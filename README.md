@@ -4,6 +4,24 @@ Few of the notes from personal projects, books, online material and trial and er
 
 ## Classes
 
+Class is a container of data and implementation. Data is in the form of variables pertianing to that class and implementation is a set of
+functions that use and manipulate the data to produce some outcome.
+
+declaring a class makes a class object. For example consider a `class test`.
+
+```cpp
+class test {
+	public:
+		void run();
+		
+	private:
+		int timer;
+};
+```
+
+declaring variable of type `test` eventually produces class object. `test t`, where `t` is the class object.
+
+
 Delete copy and move constructors, copy and move assignment operators when creating any static functions / variables within the class. Keeping them and having the default copy and assignment operators can produce undefined behavior.
 
 For example, when a singleton class to be defined and used, it is done as follows.
